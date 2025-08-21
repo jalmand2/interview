@@ -17,6 +17,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* width: 100%!important; */
 }
 .icon {
     width: 50px;
@@ -30,15 +31,20 @@ header {
     border-radius: 4px;
     border-width: 1px;
 }
+input {
+    font-family: 'Mina';
+}
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* Creates 3 columns of equal width */
   grid-template-rows: auto; /* Rows will adjust their height automatically */
   gap: 20px; /* Adds space between grid items */
+  width: 100%;
 }
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
       .grid-container {
         grid-template-columns: repeat(2, 1fr); /* Single column on smaller screens */
+        width: 50vw;
       }
     }
 .grid-item {
