@@ -1,5 +1,76 @@
-window.addEventListener("DOMContentLoaded", setup);
+// window.addEventListener("DOMContentLoaded", setup);
+// Fetch products on page load
+document.addEventListener('DOMContentLoaded', () => {
+  initProductPage();
+});
+// Start of sample code 
+// Entry point
+async function initProductPage() {
+  const products = await fetchProducts();
+  const sortedProducts = sortByPrice(products);
+  renderProducts(sortedProducts);
+  setupSearch(sortedProducts);
+}
 
+// Fetch product data from API
+async function fetchProducts() {
+  try {
+    const res = await fetch('/products');
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    return [];
+  }
+}
+
+// Sort products by price (low to high)
+function sortByPrice(products) {
+  return products.slice().sort((a, b) => a.price - b.price);
+}
+
+// Render product cards
+function renderProducts(products) {
+  const container = document.getElementById('product-grid');
+  container.innerHTML = ''; // Clear existing content
+
+  products.forEach(product => {
+    const productCard = createProductCard(product);
+    container.appendChild(productCard);
+  });
+}
+
+// Create individual product DOM element
+function createProductCard({ title, price, images }) {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+
+  card.innerHTML = `
+    <img src="${images[0]}" alt="${title}" class="product-image" />
+    <div class="product-info">
+      <h3 class="product-title">${title}</h3>
+      <p class="product-price">$${(price / 100).toFixed(2)}</p>
+    </div>
+  `;
+
+  return card;
+}
+
+// Setup live search functionality
+function setupSearch(allProducts) {
+  const searchInput = document.getElementById('search-input');
+
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim().toLowerCase();
+
+    const filtered = allProducts.filter(product =>
+      product.title.toLowerCase().includes(query)
+    );
+
+    renderProducts(filtered);
+  });
+}
+// end of sample code 
 async function setup() {
 	// START HERE
 	// API Endpoint: GET /products
